@@ -1,5 +1,4 @@
-venv_quiz
-*.docx
 *.pyc
 __pycache__
-/__pycache__/
+venv_quiz
+*.docx
