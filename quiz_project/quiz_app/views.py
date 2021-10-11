@@ -31,15 +31,15 @@ def signup(request):
 def login(request):
 
     if request.method == 'GET':
-        return render(request, 'user_authentication/login_user.html', {'form': AuthenticationForm})
+        return render(request, 'quiz_app/login.html', {'form': AuthenticationForm})
     else:
         user = authenticate(
             request, username=request.POST['username'], password=request.POST['password'])
         if not user:
-            return render(request, 'user_authentication/login_user.html', {'form': AuthenticationForm, 'error': 'User not found'})
+            return render(request, 'quiz_app/login.html', {'form': AuthenticationForm, 'error': 'User not found'})
         else:
             login(request, user)
-            return redirect('home_dashboard')
+            return redirect('home')
 
 
 def logout_user(request):
