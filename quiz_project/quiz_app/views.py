@@ -8,7 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 
 def home(request):
 
-    return HttpResponse("<h1>Welcome To Quiz</h1>")
+    return render(request, 'quiz_app/home.html')
 
 def signup(request):
 
