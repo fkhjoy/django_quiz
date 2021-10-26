@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="utf-8">
- 
+  
 
   <style media="screen">
     a:link {
@@ -78,7 +78,7 @@
     .sidebar h4 {
       color: #ccc;
       margin-top: 0;
-      
+      margin-bottom: 20px;
     }
 
     .sidebar a {
@@ -175,15 +175,19 @@
   <div class="sidebar">
     <center>
 
-      <img src="{% static "image/student.png" %}" class="profile_image" alt="">
-      <h4>{{request.user.first_name}}</h4>
-      <h6 style="color: rgb(255, 255, 255);">( Student )</h6>
+      <img src="{% static "image/admin.png" %}" class="profile_image" alt="">
+      <h4>Admin</h4>
 
     </center>
 
-    <a href="/student/student-dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-    <a href="/student/student-exam"><i class="fas fa-book"></i><span>Exam</span></a>
-    <a href="/student/student-marks"><i class="fas fa-sort-numeric-up"></i><span>Marks</span></a>
+    <a href="/admin-dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    <!-- <a href="/admin-teacher"><i class="fas fa-chalkboard-teacher"></i><span>Teacher</span></a> -->
+    <a href="/admin-student"><i class="fas fa-user-graduate"></i><span>Student</span></a>
+    <a href="/admin-course"><i class="fas fa-book"></i><span>Courses</span></a>
+    <a href="/admin-question"><i class="fas fa-question-circle"></i><span>Questions</span></a>
+    
+
+
   </div>
   <!--sidebar end-->
 
