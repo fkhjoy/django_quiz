@@ -85,7 +85,8 @@ def start_exam_view(request, pk, lv=None):
     course = QMODEL.Course.objects.get(id=pk)
     level = lv
     print(lv)
-    questions = QMODEL.Question.objects.all().filter(course=course)
+    questions = QMODEL.Question.objects.all().filter(course=course, level=lv)
+
     if request.method == 'POST':
         pass
     response = render(request, 'student/start_exam.html',
@@ -97,13 +98,13 @@ def start_exam_view(request, pk, lv=None):
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 @csrf_exempt
-def calculate_marks_view(request):
+def calculate_marks_view(request, lv=None):
     if request.COOKIES.get('course_id') is not None:
         course_id = request.COOKIES.get('course_id')
         course = QMODEL.Course.objects.get(id=course_id)
 
         total_marks = 0
-        questions = QMODEL.Question.objects.all().filter(course=course)
+        questions = QMODEL.Question.objects.all().filter(course=course, level=lv)
         for i in range(len(questions)):
 
             selected_ans = request.COOKIES.get(str(i+1))

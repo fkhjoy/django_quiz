@@ -13,7 +13,7 @@
 
 <div class="jumbotron my-4">
 
-  <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="/student/calculate-marks" method="POST">
+  <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="{% url 'calculate-marks' level %}" method="POST">
     {% csrf_token %}
     <h1 style="text-align: center;">{{course.course_name}}</h1>
     {% for q in questions%}
@@ -54,7 +54,11 @@
           </div>
 
         {% endfor %}
+        {% if questions %} 
         <input class="btn btn-info btn-lg"   type="submit" value="Submit">  
+        {% else %} 
+        <p>Coming Soon</p>
+        {% endif %}
     </form>
   </div>
 

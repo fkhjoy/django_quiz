@@ -44,7 +44,9 @@
                             <li>Questions are displayed randomly for every user.</li>
                             <li>You will be told your marks immediately when you submit the answer.</li>
                         </ul>
-                    <p></p>
+                    </p>
+                    <br>
+                    <p>Start exam by difficulty</p>
                     <a href="{% url 'start-exam' course.id 'Beginner' %}" class="btn btn-info">Beginner</a>
                     <a href="{% url 'start-exam' course.id 'Intermediate' %}" class="btn btn-info">Intermediate</a>
                     <a href="{% url 'start-exam' course.id 'Expert' %}" class="btn btn-info">Expert</a>
