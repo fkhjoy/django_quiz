@@ -45,7 +45,9 @@
                             <li>You will be told your marks immediately when you submit the answer.</li>
                         </ul>
                     <p></p>
-                    <a href="{% url 'start-exam' course.id  %}" class="btn btn-info">Let's Start</a>
+                    <a href="{% url 'start-exam' course.id 'Beginner' %}" class="btn btn-info">Beginner</a>
+                    <a href="{% url 'start-exam' course.id 'Intermediate' %}" class="btn btn-info">Intermediate</a>
+                    <a href="{% url 'start-exam' course.id 'Expert' %}" class="btn btn-info">Expert</a>
                 </div>  
                 <div class="card-footer">Best Of Luck</div>  
             </div>  
