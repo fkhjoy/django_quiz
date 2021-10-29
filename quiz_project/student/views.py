@@ -72,10 +72,20 @@ def take_exam_view(request, pk):
     total_questions = QMODEL.Question.objects.all().filter(course=course).count()
     questions = QMODEL.Question.objects.all().filter(course=course)
     total_marks = 0
+
+    student = models.Student.objects.get(user_id=request.user.id)
+    level = QMODEL.Level.objects.filter(student=student, exam=course)
+    lev = 0
+
+    if len(level) == 0:
+        QMODEL.Level.objects.create(student=student, exam=course)
+    else:
+        lev = level[0].level
+
     for q in questions:
         total_marks = total_marks + q.marks
 
-    return render(request, 'student/take_exam.html', {'course': course, 'total_questions': total_questions, 'total_marks': total_marks})
+    return render(request, 'student/take_exam.html', {'level':lev, 'course': course, 'total_questions': total_questions, 'total_marks': total_marks})
 
 
 @login_required(login_url='studentlogin')
@@ -83,14 +93,22 @@ def take_exam_view(request, pk):
 @csrf_exempt
 def start_exam_view(request, pk, lv=None):
     course = QMODEL.Course.objects.get(id=pk)
-    level = lv
-    print(lv)
-    questions = QMODEL.Question.objects.all().filter(course=course, level=lv)
+    if lv == 'Beginner':
+        level = 0
+    elif lv == 'Expert':
+        level = 2
+    else:
+        level = 1
 
+    student = models.Student.objects.get(user_id=request.user.id)
+    st_level = QMODEL.Level.objects.filter(student=student, exam=course)[0].level
+    questions = QMODEL.Question.objects.all().filter(course=course, level=lv)
+    if st_level < level:
+        return redirect('student-exam')
     if request.method == 'POST':
         pass
     response = render(request, 'student/start_exam.html',
-                      {'course': course, 'questions': questions, 'level': level})
+                      {'course': course, 'questions': questions, 'level': lv})
     response.set_cookie('course_id', course.id)
     return response
 
@@ -104,6 +122,7 @@ def calculate_marks_view(request, lv=None):
         course = QMODEL.Course.objects.get(id=course_id)
 
         total_marks = 0
+        total = 0
         questions = QMODEL.Question.objects.all().filter(course=course, level=lv)
         for i in range(len(questions)):
 
@@ -111,11 +130,25 @@ def calculate_marks_view(request, lv=None):
             actual_answer = questions[i].answer
             if selected_ans == actual_answer:
                 total_marks = total_marks + questions[i].marks
+                total += questions[i].marks
         student = models.Student.objects.get(user_id=request.user.id)
         result = QMODEL.Result()
         result.marks = total_marks
         result.exam = course
         result.student = student
+        level = QMODEL.Level.objects.filter(student=student, exam=course)[0]
+
+        if total_marks >= 0.6*total:
+            level.level = min(3, level.level+1)
+            level.save()
+
+        # else:
+        #     level = QMODEL.models.Level.objects.create(student=student, exam=course)
+        #     if total_marks >= 0.6*total:
+        #         level.level = 1
+        #         level.save()
+
+
         result.save()
 
         return redirect('view-result')
