@@ -26,8 +26,8 @@
                     <p class="card-text">
                         </p><ul style="list-style:decimal;">
                             <li>Exam Name : {{course.course_name}}</li>
-                            <li>Total Question : {{total_questions}}</li>
-                            <li>Total Marks : {{total_marks}}</li>
+                            <!-- <li>Total Question : {{total_questions}}</li>
+                            <li>Total Marks : {{total_marks}}</li> -->
                         </ul>
                     <p></p>
 
@@ -65,7 +65,8 @@
                     {% else %} 
                     <a href="{% url 'start-exam' course.id 'Beginner' %}" class="btn btn-success">Beginner<br>passed</a>
                     <a href="{% url 'start-exam' course.id 'Intermediate' %}" class="btn btn-success">Intermediate<br>passed</a>
-                    <a href="{% url 'start-exam' course.id 'Expert' %}" class="btn btn-info">Expert<br>passed</a>
+                    <a href="{% url 'start-exam' course.id 'Expert' %}" class="btn btn-success">Expert<br>passed</a>
+                    <p style="color: green;">Congratulations!</p>
                     {% endif %}
                 </div>  
                 <div class="card-footer">Best Of Luck</div>  

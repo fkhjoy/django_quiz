@@ -158,6 +158,8 @@ def calculate_marks_view(request, lv=None):
 @user_passes_test(is_student)
 def view_result_view(request):
     courses = QMODEL.Course.objects.all()
+    student = models.Student.objects.get(user_id=request.user.id)
+    level = QMODEL.Level.objects.filter(student=student, exam=courses)
     return render(request, 'student/view_result.html', {'courses': courses})
 
 
@@ -168,7 +170,8 @@ def check_marks_view(request, pk):
     student = models.Student.objects.get(user_id=request.user.id)
     results = QMODEL.Result.objects.all().filter(
         exam=course).filter(student=student)
-    return render(request, 'student/check_marks.html', {'results': results})
+    difficulty = QMODEL.Level.objects.all().filter(exam=course, student=student)
+    return render(request, 'student/check_marks.html', {'results': results, 'difficulty': difficulty})
 
 
 @login_required(login_url='studentlogin')
