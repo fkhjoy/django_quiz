@@ -34,3 +34,8 @@ class Level(models.Model):
     exam = models.ForeignKey(Course,on_delete=models.CASCADE)
     level = models.SmallIntegerField(default=0)
 
+class Feedback(models.Model):
+    exam = models.ForeignKey(Course, on_delete=models.CASCADE)
+    feedback = models.CharField(max_length=2000, blank=True, null=True)
+
+
