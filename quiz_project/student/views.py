@@ -138,7 +138,7 @@ def calculate_marks_view(request, lv=None):
         result.student = student
         level = QMODEL.Level.objects.filter(student=student, exam=course)[0]
 
-        if total_marks >= 0.6*total:
+        if total_marks == total:
             level.level = min(3, level.level+1)
             level.save()
 

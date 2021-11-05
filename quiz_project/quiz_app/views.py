@@ -201,3 +201,13 @@ def contactus_view(request):
     return render(request, 'quiz_app/contactus.html', {'form': sub})
 
 
+def edit_question_view(request, pk):
+    question = models.Question.objects.get(id=pk)
+    questionForm = forms.QuestionForm(instance=question)
+
+    if request.method == 'POST':
+        questionForm = forms.QuestionForm(data=request.POST, instance=question)
+        if questionForm.is_valid():
+            questionForm.save()
+            return redirect('/admin-view-question')
+    return render(request, 'quiz_app/edit_question.html', {'questionForm': questionForm})
