@@ -35,6 +35,7 @@
           <th>Total Question</th>
           <th>Total Marks</th>
           <th>Delete</th>
+          <th>EDIT</th>
         </tr>
       </thead>
       {% for t in courses %}
@@ -45,6 +46,7 @@
         <td>{{t.total_marks}}</td>
         
         <td><a class="btn btn-danger btn-xs" href="{% url 'delete-course' t.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td><a class="btn btn-primary btn-xs" href="{% url 'edit-course' t.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
       </tr>
       {% endfor %}
     </table>

@@ -211,3 +211,14 @@ def edit_question_view(request, pk):
             questionForm.save()
             return redirect('/admin-view-question')
     return render(request, 'quiz_app/edit_question.html', {'questionForm': questionForm})
+
+def edit_course_view(request, pk):
+    course = models.Course.objects.get(id=pk)
+    courseForm = forms.CourseForm(instance=course)
+
+    if request.method == 'POST':
+        courseForm = forms.CourseForm(data=request.POST, instance=course)
+        if courseForm.is_valid():
+            courseForm.save()
+            return redirect('/admin-view-course')
+    return render(request, 'quiz_app/admin_edit_course.html', {'courseForm': courseForm})

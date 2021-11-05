@@ -45,7 +45,7 @@
         <td> {{c.level}}</td>
         
         <td>{{c.marks}}</td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'delete-question' c.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-question' c.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
         <td><a class="btn btn-primary btn-xs" href="{% url 'edit-question' c.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
       </tr>
       {% endfor %}
