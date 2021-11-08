@@ -10,12 +10,17 @@
 
 </head>
 
+{% block time %} 
+<div align="center" style="color:rgb(233, 233, 240);font-family:verdana;font-weight: 200;" id="displaytimer"></div>
+{% endblock %}
+
 
 <div class="jumbotron my-4">
 
   <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="{% url 'calculate-marks' level %}" method="POST">
     {% csrf_token %}
     <h1 style="text-align: center;">{{course.course_name}}</h1>
+    <p>Total Questions {{ questions|length }}, Total time {{ questions|length }} minutes</p>
     {% for q in questions%}
     <h3 class="text-info">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[Marks {{q.marks}}]</h4>
     
@@ -55,7 +60,7 @@
 
         {% endfor %}
         {% if questions %} 
-        <input class="btn btn-info btn-lg"   type="submit" value="Submit">  
+        <input class="btn btn-info btn-lg" id="submit"   type="submit" value="Submit">  
         {% else %} 
         <p>Coming Soon</p>
         {% endif %}
@@ -82,6 +87,44 @@
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
+var hoursleft = 0;
+var minutesleft = {{ questions|length }};
+var secondsleft = 2; 
+var finishedtext = "Countdown finished!";
+var end;
+if(localStorage.getItem("end")) {
+    end = new Date(localStorage.getItem("end"));
+} else {
+    end = new Date();
+    end.setMinutes(end.getMinutes()+minutesleft);
+    end.setSeconds(end.getSeconds()+secondsleft);
+}
+var counter = function () {
+    var now = new Date();
+    var diff = end - now;
+    diff = new Date(diff);
+    var sec = diff.getSeconds();
+    var min = diff.getMinutes(); 
+    if (min < 10) {
+        min = "0" + min;
+    }
+    if (sec < 10) { 
+        sec = "0" + sec;
+    }     
+    if(now >= end) {     
+        clearTimeout(interval);
+        localStorage.setItem("end", null)
+        document.getElementById('displaytimer').innerHTML = finishedtext;
+        document.getElementById('submit').click();
+    } else {
+        var value ="Time remaining "+ min + ":" + sec;
+        localStorage.setItem("end", end);
+        document.getElementById('displaytimer').innerHTML = value;
+        
+    }
+}
+var interval = setInterval(counter, 1000);
 
 </script> 
 
