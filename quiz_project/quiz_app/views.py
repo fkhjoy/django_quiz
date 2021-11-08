@@ -222,3 +222,14 @@ def edit_course_view(request, pk):
             courseForm.save()
             return redirect('/admin-view-course')
     return render(request, 'quiz_app/admin_edit_course.html', {'courseForm': courseForm})
+
+def view_feedback(request, pk):
+    course = models.Course.objects.get(id=pk)
+    feedbacks = models.Feedback.objects.filter(exam=course)
+
+    context = {
+        'course': course,
+        'feedbacks': feedbacks,
+    }
+
+    return render(request, 'quiz_app/admin_feedback.html', context)

@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect,reverse
+
+from quiz_app.models import Feedback
 from . import forms,models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
@@ -12,6 +14,7 @@ from student import models as SMODEL
 from student import forms as SFORM
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from quiz_app.forms import FeedbackForm
 
 def studentclick(request):
     if request.user.is_authenticated:
@@ -112,7 +115,7 @@ def start_exam_view(request, pk, lv=None):
     if request.method == 'POST':
         pass
     response = render(request, 'student/start_exam.html',
-                      {'course': course, 'questions': questions, 'level': lv})
+                      {'course': course, 'questions': questions, 'level': lv, 'id':course.id})
     response.set_cookie('course_id', course.id)
     return response
 
@@ -120,7 +123,8 @@ def start_exam_view(request, pk, lv=None):
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 @csrf_exempt
-def calculate_marks_view(request, lv=None):
+def calculate_marks_view(request, lv):
+
     if request.COOKIES.get('course_id') is not None:
         course_id = request.COOKIES.get('course_id')
         course = QMODEL.Course.objects.get(id=course_id)
@@ -155,7 +159,19 @@ def calculate_marks_view(request, lv=None):
 
         result.save()
 
-        return redirect('view-result')
+    if request.method == 'POST' :
+        exam = QMODEL.Course.objects.get(id=course_id)
+        form = FeedbackForm(request.POST)
+
+        if form.is_valid():
+            form_ = form.save(commit=False)
+            form_.exam = exam
+            form_.lv = lv
+            form_.student = student
+            form_.save()
+            return redirect('view-result')
+
+    return redirect('view-result')
 
 
 @login_required(login_url='studentlogin')
@@ -230,3 +246,21 @@ def get_certificate(request, pk):
     if pisa_status.err:
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
+
+@csrf_exempt
+def feedback(request, pk, lv):
+
+    # if request.method == 'POST':
+    #     exam = QMODEL.Course.objects.get(id=pk)
+    #     form = FeedbackForm(request.POST)
+        
+    #     if form.is_valid():
+    #         form_ = form.save(commit=False)
+    #         form_.exam = exam 
+    #         form_.save()
+    #         return redirect('calculate-marks', lv)
+    # else:
+    form = FeedbackForm()
+
+    return render(request, 'student/feedback.html', {'form': form, 'lv':lv})
+

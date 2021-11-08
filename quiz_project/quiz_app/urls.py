@@ -50,4 +50,6 @@ urlpatterns = [
     path('edit-question/<int:pk>', views.edit_question_view, name='edit-question'),
     path('delete-question/<int:pk>',
          views.delete_question_view, name='delete-question'),
+     
+    path('view-feedback/<int:pk>', views.view_feedback, name='view-feedback'),
 ]

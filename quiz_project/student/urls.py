@@ -22,4 +22,6 @@ urlpatterns = [
          views.update_student_view, name='update-profile'),
      
     path('certificate/<int:pk>', views.get_certificate, name='certificate'),
+    path('feedback/<int:pk>/<str:lv>', views.feedback, name='feedback'),
+
 ]

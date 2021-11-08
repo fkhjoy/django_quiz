@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        form{
+           margin: 50px; 
+           top:50%;
+           left:50%;
+          
+        }
+
+        .input-element{
+            font-size: 100px; 
+            width: 400px;
+        }
+
+    </style>
+  </head>
+  <body>
+    {% include "quiz_app/navbar.html" %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <form class="box" method="post" action="{% url 'calculate-marks' lv %}">
+                    {% csrf_token %}
+                    <h1>Feedback</h1>
+                    <p class="text-muted"> Please submit your feedback</p>
+                    
+                    <div class="input-element">
+                        {% render_field form.feedback class="form-control" placeholder="Feedback" %}
+                    </div>               
+                     
+                    <input type="submit" name="" value="Submit">
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br>
+{% include "quiz_app/footer.html" %}
+  </body>
+</html>
