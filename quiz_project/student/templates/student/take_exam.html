@@ -52,7 +52,7 @@
                     </p>
                     <br>
                     <p>Start exam by difficulty</p>
-                    
+                    <p>
                     {% if level < 1 %}
                     <a href="{% url 'start-exam' course.id 'Beginner' %}" class="btn btn-info">Beginner<br>start</a>
                     <button class="btn btn-dark">Intermediate<br>locked</button>
@@ -69,7 +69,14 @@
                     <a href="{% url 'start-exam' course.id 'Beginner' %}" class="btn btn-success">Beginner<br>passed</a>
                     <a href="{% url 'start-exam' course.id 'Intermediate' %}" class="btn btn-success">Intermediate<br>passed</a>
                     <a href="{% url 'start-exam' course.id 'Expert' %}" class="btn btn-success">Expert<br>passed</a>
-                    <p style="color: green;">Congratulations!</p>
+                    </p>
+
+                    <p style="color: green;">
+                        <strong>Congratulations!</strong><br>
+                        <a href="{% url 'certificate' course.id %}" class="btn btn-success">Get Certificate</a>
+                    </p>
+                    
+
                     {% endif %}
                 </div>  
                 <div class="card-footer">Best Of Luck</div>  

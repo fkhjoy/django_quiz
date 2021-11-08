@@ -2,12 +2,16 @@ from django.shortcuts import render,redirect,reverse
 from . import forms,models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from datetime import date, timedelta
 from quiz_app import models as QMODEL
 from django.views.decorators.csrf import csrf_exempt
+from student import models as SMODEL
+from student import forms as SFORM
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 def studentclick(request):
     if request.user.is_authenticated:
@@ -178,3 +182,51 @@ def check_marks_view(request, pk):
 def student_marks_view(request):
     courses = QMODEL.Course.objects.all()
     return render(request, 'student/student_marks.html', {'courses': courses})
+
+
+@login_required(login_url='studentlogin')
+def update_student_view(request):
+    student = SMODEL.Student.objects.get(id=request.user.id)
+    user = SMODEL.User.objects.get(id=student.user_id)
+    userForm = SFORM.StudentUserForm(instance=user)
+    studentForm = SFORM.StudentForm(request.FILES, instance=student)
+    mydict = {'userForm': userForm, 'studentForm': studentForm}
+    if request.method == 'POST':
+        userForm = SFORM.StudentUserForm(request.POST, instance=user)
+        studentForm = SFORM.StudentForm(
+            request.POST, request.FILES, instance=student)
+        if userForm.is_valid() and studentForm.is_valid():
+            user = userForm.save()
+            user.set_password(user.password)
+            user.save()
+            studentForm.save()
+            return redirect('student-dashboard')
+    return render(request, 'student/update_student.html', context=mydict)
+
+def get_certificate(request, pk):
+    name = request.user.first_name +" "+ request.user.last_name
+    course = QMODEL.Course.objects.get(id=pk)
+    template = get_template('student/certificate.html')
+
+    student = models.Student.objects.get(user_id=request.user.id)
+    st_level = QMODEL.Level.objects.filter(
+        student=student, exam=course)[0].level
+
+    if st_level < 3:
+        return redirect('student-exam')
+
+    context = {
+        'name':name,
+        'course':course.course_name,
+    }
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename="{name}_{course}.pdf"'
+
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(
+        html, dest=response)
+
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response

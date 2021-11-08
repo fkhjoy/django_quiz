@@ -19,8 +19,8 @@
 
   <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="{% url 'calculate-marks' level %}" method="POST">
     {% csrf_token %}
-    <h1 style="text-align: center;">{{course.course_name}}</h1>
-    <p>Total Questions {{ questions|length }}, Total time {{ questions|length }} minutes</p>
+    <h1 style="text-align: center; font-size: larger;">{{course.course_name}} ({{level}})</h1>
+    <p>Total Questions {{ questions|length }}, Total time {{ questions|length }} {% if questions|length > 1 %} minutes {% else %}minute{% endif %}</p>
     {% for q in questions%}
     <h3 class="text-info">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[Marks {{q.marks}}]</h4>
     

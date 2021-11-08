@@ -18,5 +18,8 @@ urlpatterns = [
     path('view-result', views.view_result_view, name='view-result'),
     path('check-marks/<int:pk>', views.check_marks_view, name='check-marks'),
     path('student-marks', views.student_marks_view, name='student-marks'),
-
+    path('update-profile/',
+         views.update_student_view, name='update-profile'),
+     
+    path('certificate/<int:pk>', views.get_certificate, name='certificate'),
 ]
