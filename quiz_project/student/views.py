@@ -30,7 +30,7 @@ def student_signup(request):
         userForm=forms.StudentUserForm(request.POST)
         studentForm=forms.StudentForm(request.POST,request.FILES)
         if userForm.is_valid() and studentForm.is_valid():
-            user=userForm.save()
+            user=userForm.save(commit=False)
             user.set_password(user.password)
             user.save()
             student=studentForm.save(commit=False)
@@ -86,8 +86,11 @@ def take_exam_view(request, pk):
 
     if len(level) == 0:
         QMODEL.Level.objects.create(student=student, exam=course)
+
     else:
         lev = level[0].level
+    
+    print("lev", lev)
 
     for q in questions:
         total_marks = total_marks + q.marks
@@ -136,16 +139,17 @@ def calculate_marks_view(request, lv):
 
             selected_ans = request.COOKIES.get(str(i+1))
             actual_answer = questions[i].answer
-            if selected_ans == actual_answer:
-                total_marks = total_marks + questions[i].marks
+            total_marks = total_marks + questions[i].marks
+            if selected_ans == actual_answer:                
                 total += questions[i].marks
         student = models.Student.objects.get(user_id=request.user.id)
         result = QMODEL.Result()
-        result.marks = total_marks
+        result.marks = total
         result.exam = course
         result.student = student
         level = QMODEL.Level.objects.filter(student=student, exam=course)[0]
 
+        print(total_marks, total)
         if total_marks == total:
             level.level = min(3, level.level+1)
             level.save()
@@ -202,8 +206,10 @@ def student_marks_view(request):
 
 @login_required(login_url='studentlogin')
 def update_student_view(request):
-    student = SMODEL.Student.objects.get(id=request.user.id)
-    user = SMODEL.User.objects.get(id=student.user_id)
+
+    user = SMODEL.User.objects.get(id=request.user.id)
+    student = SMODEL.Student.objects.get(id=user.student.id)
+    
     userForm = SFORM.StudentUserForm(instance=user)
     studentForm = SFORM.StudentForm(request.FILES, instance=student)
     mydict = {'userForm': userForm, 'studentForm': studentForm}

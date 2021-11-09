@@ -35,7 +35,7 @@
 </head>
 
 <br><br>
-<h3 style="text-align:center;">UPDATE STUDENT</h3>
+<h3 style="text-align:center;">UPDATE PROFILE</h3>
 <div>
   <form method="post" autocomplete="off" enctype="multipart/form-data" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
@@ -44,8 +44,10 @@
         <label for="last_name">Last Name</label>
         {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
         <label for="mobile">Mobile</label>
-        {% render_field studentForm.mobile class="form-control" placeholder="Mobile" %}
-          <label for="address">Email Address</label>
+        <br>
+        {% render_field studentForm.mobile|attr:'required:true' type='tel' pattern="[0-9]{3}[0-9]{3}[0-9]{4}"  class="form-control" placeholder="012-345-6789" %}
+        <br><br>
+        <label for="address">Email Address</label>
         {% render_field studentForm.email_address class="form-control" placeholder="Address" %}
           
         <label for="username">Username</label>
