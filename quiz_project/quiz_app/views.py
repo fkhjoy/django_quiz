@@ -200,7 +200,7 @@ def contactus_view(request):
             return render(request, 'quiz_app/contactussuccess.html')
     return render(request, 'quiz_app/contactus.html', {'form': sub})
 
-
+@login_required(login_url='adminlogin')
 def edit_question_view(request, pk):
     question = models.Question.objects.get(id=pk)
     questionForm = forms.QuestionForm(instance=question)
@@ -212,6 +212,7 @@ def edit_question_view(request, pk):
             return redirect('/admin-view-question')
     return render(request, 'quiz_app/edit_question.html', {'questionForm': questionForm})
 
+@login_required(login_url='adminlogin')
 def edit_course_view(request, pk):
     course = models.Course.objects.get(id=pk)
     courseForm = forms.CourseForm(instance=course)
@@ -223,6 +224,7 @@ def edit_course_view(request, pk):
             return redirect('/admin-view-course')
     return render(request, 'quiz_app/admin_edit_course.html', {'courseForm': courseForm})
 
+@login_required(login_url='adminlogin')
 def view_feedback(request, pk):
     course = models.Course.objects.get(id=pk)
     feedbacks = models.Feedback.objects.filter(exam=course)
