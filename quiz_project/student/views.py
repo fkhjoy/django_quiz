@@ -142,6 +142,7 @@ def calculate_marks_view(request, lv):
             total_marks = total_marks + questions[i].marks
             if selected_ans == actual_answer:                
                 total += questions[i].marks
+                
         student = models.Student.objects.get(user_id=request.user.id)
         result = QMODEL.Result()
         result.marks = total

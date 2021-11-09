@@ -45,7 +45,7 @@
         {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
         <label for="mobile">Mobile</label>
         <br>
-        {% render_field studentForm.mobile|attr:'required:true' type='tel' pattern="[0-9]{3}[0-9]{3}[0-9]{4}"  class="form-control" placeholder="012-345-6789" %}
+        {% render_field studentForm.mobile|attr:'required:true' pattern="[0-9]{10}"  class="form-control" placeholder="10 digits number" %}
         <br><br>
         <label for="address">Email Address</label>
         {% render_field studentForm.email_address class="form-control" placeholder="Address" %}
