@@ -36,7 +36,7 @@ class Level(models.Model):
 
 class Feedback(models.Model):
     exam = models.ForeignKey(Course, on_delete=models.CASCADE)
-    feedback = models.CharField(max_length=2000, blank=True, null=True)
+    feedback = models.TextField(max_length=2000, blank=True, null=True)
     lv = models.CharField(max_length=100, null=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
 

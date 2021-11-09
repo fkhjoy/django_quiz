@@ -17,6 +17,7 @@
         }
 
     </style>
+    <Title>Feedback</Title>
   </head>
   <body>
     {% include "quiz_app/navbar.html" %}
@@ -30,10 +31,10 @@
                     <p class="text-muted"> Please submit your feedback</p>
                     
                     <div class="input-element">
-                        {% render_field form.feedback class="form-control" placeholder="Feedback" %}
+                        {% render_field form.feedback class="form-control" placeholder="Your feedback..." %}
                     </div>               
-                     
-                    <input type="submit" name="" value="Submit">
+                    <br>
+                    <input class="btn btn-info" type="submit" name="" value="Submit">
 
                 </form>
             </div>
