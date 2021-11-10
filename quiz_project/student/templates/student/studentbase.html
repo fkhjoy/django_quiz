@@ -183,7 +183,11 @@
     <center>
 
       <!-- <img src="{% static "image/student.png" %}" class="profile_image" alt=""> -->
-      <img src="{{ request.user.student.profile_pic.url }}" class="profile_image" alt="">
+      {% if request.user.student.profile_pic %}
+        <img src="{{ request.user.student.profile_pic.url }}" class="profile_image" alt="">
+      {% else %} 
+        <img src="{% static "image/student.png" %}" class="profile_image" alt="">
+      {% endif %}
       <h4>{{request.user.first_name}}</h4>
       
       <h6 style="color: rgb(255, 255, 255);">( Student )</h6>
