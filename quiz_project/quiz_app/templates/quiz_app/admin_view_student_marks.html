@@ -43,8 +43,15 @@
       <tr>
 
         <td> {{t.get_name}}</td>
-        <td> <img src="{{ t.profile_pic.url }}" alt="Profile Pic" height="40px" width="40px" /></td>
-        
+        <td>
+          {% if t.profile_pic %}
+          <img src="{{ t.profile_pic.url }}" class="profile_image" alt="" width="40" 
+            height="40">
+          {% else %}
+            <img src="{% static 'image/student.png' %}" class="profile_image" alt="" width="40" 
+            height="40">
+          {% endif %}
+        </td>
         
         <td><a class="btn btn-primary btn-xs" href="{% url 'admin-view-marks' t.id  %}"><span class="glyphicon glyphicon-eye-open"></span></a></td>
         

@@ -57,6 +57,7 @@ def admin_student_view(request):
 @login_required(login_url='adminlogin')
 def admin_view_student_view(request):
     students= SMODEL.Student.objects.all()
+    print(list(students))
     return render(request, 'quiz_app/admin_view_student.html', {'students': students})
 
 
